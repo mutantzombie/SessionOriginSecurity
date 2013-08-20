@@ -3,18 +3,25 @@ SessionOriginSecurity
 
 Mike Shema <mike@deadliestwebattacks.com> [@CodexWebSecurum](https://twitter.com/CodexWebSecurum)
 
-Adapted from the original post at [http://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/]()
+Adapted from the original post at [http://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/](). 
+
+Some background on Cross-Site Request Forgery is at [http://deadliestwebattacks.com/2013/01/21/user-agent-secret-agent-double-agent/]().
 
 Thanks to Vaagn Toukharian <[@tukharian](https://twitter.com/tukharian)> for input, feedback, and design help.
 
 The Proposed Solution
 ===
 
-SOS is proposed additional directives for the Content Security Policy. Its behavior includes pre-flight requests as used by the Cross Origin Resource Sharing spec.
+The SOS specification proposes additional directives for the Content Security Policy in order to counter Cross-Site Request Forgery (CSRF) attacks. Its behavior includes pre-flight requests as used by the Cross Origin Resource Sharing spec.
 
-The name is intended to evoke the SOS of Morse code, which is both easy to transmit and easy to understand. If it is required to explain what SOS stands for, then “Session Origin Security” would be preferred.
+The name is intended to evoke the SOS of Morse code, which is both easy to transmit and easy to understand. The acronym may stand for "Session Origin Security", although "Save Our Site" would be just as appropriate. 
 
 An SOS policy may be applied to one or more cookies for a web application on a per-cookie or collective basis. The policy controls whether the browser includes those cookies during cross-origin requests. (A cross-origin resource cannot access a cookie from another origin, but it may generate a request that causes the cookie to be included.)
+
+Instances of Cross-Origin Requests
+---
+
+Any request generated from a resource whose browsing context or parent origin does not match the destination origin of the request is considered a cross-origin request.
 
 Format
 ===
@@ -51,7 +58,7 @@ Some examples of a header:
 
 Content-Security-Policy: sos-apply=sessionid 'isolate'
 Content-Security-Policy: sos-apply=sessionid 'self'
-Content-Security-Policy: sos-apply=info 'any'
+Content-Security-Policy: sos-apply=lang 'any'
 
 Pre-Flight
 ===
@@ -77,7 +84,7 @@ The destination origin may respond with an Access-Control-SOS-Reply header that 
 
 The response header may also include an expiration in seconds. The expiration allows the browser to remember this response and forego subsequent pre-flight checks for the duration of the value.
 
-The following example instructs the browser to include a cookie with a cross-origin request to the destination origin even if the cookie’s policy had been 'self‘. (In the absence of a reply header, the browser would otherwise not include the cookie.)
+The following example instructs the browser to include a cookie with a cross-origin request to the destination origin even if the cookie’s policy had been 'self‘. (In the absence of a reply header, the browser would otherwise exclude the cookie.)
 
 Access-Control-SOS-Reply: 'allow' expires=600
 
@@ -137,7 +144,6 @@ It would be much easier to retrofit these headers on a legacy app by using a Web
 
 It would be (possibly) easier to audit a site’s protection based on implementing the headers via mod_rewrite tricks or WAF rules that apply to whole groups of resources than it would for a code audit of each form and action.
 
-
 Cautions
 ===
 
@@ -147,6 +153,25 @@ Conflicting policies would cause confusion. For example, two different resources
 
 Cookies have the unfortunate property that they can belong to multiple origins (i.e. sub-domains). Hence, some apps might incur additional overhead of pre-flight requests or complexity in trying to distinguish cross-origin of unrelated domains and cross-origin of sub-domains.
 
-Apps that rely on “Return To” URL parameters might not be fixed if the return URL has the CSRF exploit and the browser is now redirecting from the same origin. Maybe. This needs some investigation.
+**The "Return URL" Problem**  
+Apps that rely on “Return To” URL parameters might not be fixed if the return URL has the CSRF exploit and the browser is now redirecting from the same origin. This needs some investigation.
 
-There’s no migration for old browsers: You’re secure (using a supporting browser and an adopted site) or you’re not. On the other hand, an old browser is an insecure browser anyway — browser exploits are more threatening than CSRF for many, many cases.
+This would be a scenario where SOS can't provide adequate protection, but it wouldn't be a strong reason to dismiss it -- even CSP has 'unsafe-inline' to accommodate apps that can't separate JavaScript resources adequately.
+
+In this case, the security burden shifts back to the developer to review to Return URL mechanism. For example, the app could verify Origin request headers or restrict actions permitted via the Return URL.
+
+**Only Protects the Protected**  
+There’s no migration for old browsers: You’re secure (using a supporting browser and an adopted site) or you’re not. On the other hand, an old browser is an insecure browser anyway -- browser exploits are more threatening than CSRF for many, many cases.
+
+
+TODO
+===
+Could this be used to create more granularity within same origin resources? (Look at Navigation Controller for references)
+
+How would this handle data: schemes? What Origin do browsers consider them to be? What would an attack look like like leveraged that as an attack vector?
+
+Additional Resources & References
+===
+* SameDomain cookies. [https://github.com/mozmark/SameDomain-cookies]()
+* "Lightweight Server Support for Browser-Based CSRF Protection". [http://research.microsoft.com/en-us/um/people/helenw/papers/racl.pdf]()
+* "Robust Defenses for Cross-Site Request Forgery". [http://www.adambarth.com/papers/2008/barth-jackson-mitchell-b.pdf]()
