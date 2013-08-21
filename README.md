@@ -9,10 +9,37 @@ Some background on Cross-Site Request Forgery is at [http://deadliestwebattacks.
 
 Thanks to Vaagn Toukharian <[@tukharian](https://twitter.com/tukharian)> for input, feedback, and design help.
 
-The Proposed Solution
+Contents
+---
+
+* [The Problem](#problem)
+* [The Proposed Solution](#solution)
+* [Format](#syntax)
+* [Policies](#policies)
+* [Benefits](#benefits)
+* [Notes](#notes)
+* [Cautions](#cautions)
+* [TODO](#todo)
+* [Additional Resources & References](#references)
+
+[The Problem](id:problem)
+===
+Cross-Site Request Forgery (CSRF) abuses the normal ability of browsers to make cross-origin requests by crafting a resource on one origin that causes a victim’s browser to make a request to another origin using the victim’s security context associated with that target origin.
+
+The attacker creates and places a malicious resource on an origin unrelated to the target origin to which the victim’s browser will make a request. The malicious resource contains content that causes a browser to make a request to the target origin. That request contains parameters selected by the attacker to affect the victim’s security context with regard to the target origin.
+
+The attacker does not need to violate the browser’s Same Origin Policy to generate the cross origin request. Nor does the attack require reading the response from the target origin. The victim’s browser automatically includes cookies associated with the target origin for which the forged request is being made. Thus, the attacker creates an action, the browser requests the action and the target web application performs the action under the context of the cookies it receives — the victim’s security context.
+
+An effective CSRF attack means the request modifies the victim’s context with regard to the web application in a way that’s favorable to the attacker. For example, a CSRF attack may change the victim’s password for the web application.
+
+CSRF takes advantage of web applications that fail to enforce strong authorization of actions during a user’s session. The attack relies on the normal, expected behavior of web browsers to make cross-origin requests from resources they load on unrelated origins.
+
+The browser’s Same Origin Policy prevents a resource in one origin to read the response from an unrelated origin. However, the attack only depends on the forged request being submitted to the target web app under the victim’s security context — it does not depend on receiving or seeing the target app’s response.
+
+[The Proposed Solution](id:solution)
 ===
 
-The SOS specification proposes additional directives for the Content Security Policy in order to counter Cross-Site Request Forgery (CSRF) attacks. Its behavior includes pre-flight requests as used by the Cross Origin Resource Sharing spec.
+The SOS specification proposes additional directives for the Content Security Policy in order to counter CSRF attacks. Its behavior includes pre-flight requests as used by the Cross Origin Resource Sharing spec.
 
 The name is intended to evoke the SOS of Morse code, which is both easy to transmit and easy to understand. The acronym may stand for "Session Origin Security", although "Save Our Site" would be just as appropriate. 
 
@@ -23,7 +50,7 @@ Instances of Cross-Origin Requests
 
 Any request generated from a resource whose browsing context or parent origin does not match the destination origin of the request is considered a cross-origin request.
 
-Format
+[Format](id:format)
 ===
 
 A web application sets a policy by including a Content-Security-Policy response header. This header may accompany the response that includes the Set-Cookie header for the cookie to be covered, or it may be set on a separate resource.
@@ -34,14 +61,14 @@ Content-Security-Policy: sos-apply=cookieName 'policy'
 
 A response may include multiple CSP headers, such as:
 
-Content-Security-Policy: sos-apply=cookieOne 'policy'
+Content-Security-Policy: sos-apply=cookieOne 'policy'  
 Content-Security-Policy: sos-apply=cookieTwo 'policy'
 
 A policy may be applied to all cookies by using a wildcard:
 
 Content-Security-Policy: sos-apply=* 'policy'
 
-Policies
+[Policies](id:policies)
 ===
 
 One of three directives may be assigned to a policy. The directives affect the browser’s default handling of cookies for cross-origin requests to a cookie’s destination origin. The pre-flight concept will be described in the next section; it provides a mechanism for making exceptions to a policy on a per-resource basis.
@@ -56,8 +83,8 @@ Policies are only invoked for cross-origin requests. Same origin requests are un
 
 Some examples of a header:
 
-Content-Security-Policy: sos-apply=sessionid 'isolate'
-Content-Security-Policy: sos-apply=sessionid 'self'
+Content-Security-Policy: sos-apply=sessionid 'isolate'  
+Content-Security-Policy: sos-apply=sessionid 'self'  
 Content-Security-Policy: sos-apply=lang 'any'
 
 Pre-Flight
@@ -73,12 +100,12 @@ Access-Control-SOS: cookieOne CookieTwo
 
 A pre-flight request might look like the following, note that the Origin header is expected to be present as well:
 
-OPTIONS https://web.site/resource HTTP/1.1
-Host: web.site
-Origin: http://other.origin
-Access-Control-SOS: sid
-Connection: keep-alive
-Content-Length: 0
+OPTIONS https://web.site/resource HTTP/1.1  
+Host: web.site  
+Origin: http://other.origin  
+Access-Control-SOS: sid  
+Connection: keep-alive  
+Content-Length: 0  
 
 The destination origin may respond with an Access-Control-SOS-Reply header that instructs the browser whether to include the cookie(s). The response will either be 'allow' or 'deny'.
 
@@ -96,7 +123,7 @@ The browser would be expected to track policies and policy exceptions based on d
 
 As described in this section, the pre-flight is an all-or-nothing affair. If multiple cookies are listed in the Access-Control-SOS header, then the response applies to all of them. This might not provide enough flexibility. On the other hand, simplicity tends to encourage security.
 
-Benefits
+[Benefits](id:benefits)
 ===
 
 A policy can be applied on a per-cookie basis. If a policy-covered cookie is disallowed, any non-covered cookies for the destination origin may still be included. Think of a non-covered cookie as an unadorned or “naked” cookie — their behavior and that of the browser matches the web of today.
@@ -115,7 +142,7 @@ Thus, the /wp-admin/ directory would be protected from CSRF exploits because a b
 
 The use case for the 'isolate' policy is straight-forward: the site does not expect any cross-origin requests to include cookies related to authentication or authorization. A bank or web-based email might desire this behavior. The intention of isolate is to avoid the need for a pre-flight request and to forbid exceptions to the policy.
 
-Notes
+[Notes](id:notes)
 ===
 
 The following thoughts represent some areas that require more consideration or that convey some of the motivations behind this proposal.
@@ -144,7 +171,7 @@ It would be much easier to retrofit these headers on a legacy app by using a Web
 
 It would be (possibly) easier to audit a site’s protection based on implementing the headers via mod_rewrite tricks or WAF rules that apply to whole groups of resources than it would for a code audit of each form and action.
 
-Cautions
+[Cautions](id:cautions)
 ===
 
 In addition to the previous notes, these are highlighted as particular concerns.
@@ -164,14 +191,17 @@ In this case, the security burden shifts back to the developer to review to Retu
 There’s no migration for old browsers: You’re secure (using a supporting browser and an adopted site) or you’re not. On the other hand, an old browser is an insecure browser anyway -- browser exploits are more threatening than CSRF for many, many cases.
 
 
-TODO
+[TODO](id:todo)
 ===
 Could this be used to create more granularity within same origin resources? (Look at Navigation Controller for references)
 
 How would this handle data: schemes? What Origin do browsers consider them to be? What would an attack look like like leveraged that as an attack vector?
 
-Additional Resources & References
+[Additional Resources & References](id:references)
 ===
-* SameDomain cookies. [https://github.com/mozmark/SameDomain-cookies]()
+* Content Security Policy. [http://www.w3.org/TR/CSP/]()
+* Cross-Origin Resource Sharing. [http://www.w3.org/TR/cors/]()
 * "Lightweight Server Support for Browser-Based CSRF Protection". [http://research.microsoft.com/en-us/um/people/helenw/papers/racl.pdf]()
 * "Robust Defenses for Cross-Site Request Forgery". [http://www.adambarth.com/papers/2008/barth-jackson-mitchell-b.pdf]()
+* SameDomain cookies. [https://github.com/mozmark/SameDomain-cookies]()
+
