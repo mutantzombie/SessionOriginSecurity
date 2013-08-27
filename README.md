@@ -1,4 +1,4 @@
-SessionOriginSecurity
+Towards Defeating Cross-Site Request Forgery
 =====================
 
 Mike Shema <mike@deadliestwebattacks.com> [@CodexWebSecurum](https://twitter.com/CodexWebSecurum)
@@ -17,6 +17,7 @@ Contents
 * [Format](#syntax)
 * [Policies](#policies)
 * [Benefits](#benefits)
+* [Considerations](#considerations)
 * [Notes](#notes)
 * [Cautions](#cautions)
 * [TODO](#todo)
@@ -36,7 +37,7 @@ CSRF takes advantage of web applications that fail to enforce strong authorizati
 
 The browser’s Same Origin Policy prevents a resource in one origin to read the response from an unrelated origin. However, the attack only depends on the forged request being submitted to the target web app under the victim’s security context — it does not depend on receiving or seeing the target app’s response.
 
-[The Proposed Solution](id:solution)
+[Proposed Solution: Session Origin Security](id:solution)
 ===
 
 The SOS specification proposes additional directives for the Content Security Policy in order to counter CSRF attacks. Its behavior includes pre-flight requests as used by the Cross Origin Resource Sharing spec.
@@ -142,6 +143,15 @@ Thus, the /wp-admin/ directory would be protected from CSRF exploits because a b
 
 The use case for the 'isolate' policy is straight-forward: the site does not expect any cross-origin requests to include cookies related to authentication or authorization. A bank or web-based email might desire this behavior. The intention of isolate is to avoid the need for a pre-flight request and to forbid exceptions to the policy.
 
+
+[Considerations](id:considerations)
+===
+Policy via CSP header or Cookie annotation
+---
+
+A CSP header was chosen in favor of decorating the cookie with new attributes because cookies are already ugly, clunky, and (somewhat) broken enough. Plus, the underlying goal is to protect a session or security context associated with a user. As such, there might be reason to extended this concept to the instantiation of Web Storage objects, e.g. forbid them in mixed-origin resources. However, this hasn’t really been thought through and probably adds more complexity without solving an actual problem.
+
+
 [Notes](id:notes)
 ===
 
@@ -161,8 +171,6 @@ Cryptographic constructs are avoided on purpose. Even if designed well, they are
 
 PRNG values are avoided on purpose, for the same reasons as cryptographic nonces. It’s worth noting that misunderstanding the difference between a random value and a cryptographically secure PRNG (which a CSRF token should favor) is another point against a PRNG-based control.
 
-A CSP header was chosen in favor of decorating the cookie with new attributes because cookies are already ugly, clunky, and (somewhat) broken enough. Plus, the underlying goal is to protect a session or security context associated with a user. As such, there might be reason to extended this concept to the instantiation of Web Storage objects, e.g. forbid them in mixed-origin resources. However, this hasn’t really been thought through and probably adds more complexity without solving an actual problem.
-
 The pre-flight request/response shouldn’t be a source of information leakage about cookies used by the app. At least, it shouldn’t provide more information than might be trivially obtained through other techniques.
 
 It’s not clear what an ideal design pattern would be for deploying SOS headers. A policy could accompany each Set-Cookie header. Or the site could use a redirect or similar bottleneck to set policies from a single resource.
@@ -176,8 +184,10 @@ It would be (possibly) easier to audit a site’s protection based on implementi
 
 In addition to the previous notes, these are highlighted as particular concerns.
 
+**Conflicting Policies**  
 Conflicting policies would cause confusion. For example, two different resources separately define an 'any' and 'self' for the same cookie. It would be necessary to determine which receives priority.
 
+**Same Origin and Sub Origin**  
 Cookies have the unfortunate property that they can belong to multiple origins (i.e. sub-domains). Hence, some apps might incur additional overhead of pre-flight requests or complexity in trying to distinguish cross-origin of unrelated domains and cross-origin of sub-domains.
 
 **The "Return URL" Problem**  
@@ -190,12 +200,15 @@ In this case, the security burden shifts back to the developer to review to Retu
 **Only Protects the Protected**  
 There’s no migration for old browsers: You’re secure (using a supporting browser and an adopted site) or you’re not. On the other hand, an old browser is an insecure browser anyway -- browser exploits are more threatening than CSRF for many, many cases.
 
+An apt comparison might be the X-FRAME-OPTIONS header. Sites may set this header to defeat framing-based attacks such as clickjacking, but only within User Agents that correctly handle the header. Otherwise, the site must rely on JavaScript-based anti-framing code to protect legacy UAs. (This [paper](http://seclab.stanford.edu/websec/framebusting/framebust.pdf) describes the clickjacking problem in detail.)
 
 [TODO](id:todo)
 ===
 Could this be used to create more granularity within same origin resources? (Look at Navigation Controller for references)
 
 How would this handle data: schemes? What Origin do browsers consider them to be? What would an attack look like like leveraged that as an attack vector?
+
+Demonstrate how this could be implemented by Web App Firewall rules.
 
 [Additional Resources & References](id:references)
 ===
