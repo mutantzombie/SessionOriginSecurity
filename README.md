@@ -220,7 +220,7 @@ Demonstrate how this could be implemented by Web App Firewall rules.
 
 Later work
 ----
-- First-Party Cookies [Draft RFC](https://tools.ietf.org/html/draft-west-first-party-cookies-07).
-   - This is notable for being implemented in the Google Chrome Browser. Check out the [commit](https://codereview.chromium.org/1783813002).
+- First-Party Cookies ([draft RFC](https://tools.ietf.org/html/draft-west-first-party-cookies-07)).
+   - This is notable for being implemented and slated for release in version 51 of the Google Chrome Browser. Check out the [commit](https://codereview.chromium.org/1783813002).
    - It was referenced in the BlackHat Asia 2016 [briefing](https://www.blackhat.com/docs/asia-16/materials/asia-16-Karakostas-Practical-New-Developments-In-The-BREACH-Attack.pdf) (slide 35) by Dimitris Karakostas and Dionysis Zindros that called out the benefits of anti-CSRF measures vs. TLS [BREACH-style](http://breachattack.com) vulnerabilities.
 
