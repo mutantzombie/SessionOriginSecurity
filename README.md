@@ -3,9 +3,9 @@ Towards Defeating Cross-Site Request Forgery
 
 Mike Shema <mike@deadliestwebattacks.com> [@CodexWebSecurum](https://twitter.com/CodexWebSecurum)
 
-Adapted from the original post at [http://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/](). 
+Adapted from the original post at [https://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/](). 
 
-Some background on Cross-Site Request Forgery is at [http://deadliestwebattacks.com/2013/01/21/user-agent-secret-agent-double-agent/]().
+Some background on Cross-Site Request Forgery is at [https://deadliestwebattacks.com/2013/01/21/user-agent-secret-agent-double-agent/]().
 
 Thanks to Vaagn Toukharian <[@tukharian](https://twitter.com/tukharian)> for input, feedback, and design help.
 
@@ -200,7 +200,7 @@ In this case, the security burden shifts back to the developer to review to Retu
 **Only Protects the Protected**  
 There’s no migration for old browsers: You’re secure (using a supporting browser and an adopted site) or you’re not. On the other hand, an old browser is an insecure browser anyway -- browser exploits are more threatening than CSRF for many, many cases.
 
-An apt comparison might be the X-FRAME-OPTIONS header. Sites may set this header to defeat framing-based attacks such as clickjacking, but only within User Agents that correctly handle the header. Otherwise, the site must rely on JavaScript-based anti-framing code to protect legacy UAs. (This [paper](http://seclab.stanford.edu/websec/framebusting/framebust.pdf) describes the clickjacking problem in detail.)
+An apt comparison might be the X-FRAME-OPTIONS header. Sites may set this header to defeat framing-based attacks such as clickjacking, but only within User Agents that correctly handle the header. Otherwise, the site must rely on JavaScript-based anti-framing code to protect legacy UAs. (This [paper](https://seclab.stanford.edu/websec/framebusting/framebust.pdf) describes the clickjacking problem in detail.)
 
 [TODO](id:todo)
 ===
@@ -214,7 +214,7 @@ Demonstrate how this could be implemented by Web App Firewall rules.
 ===
 * Content Security Policy. [http://www.w3.org/TR/CSP/]()
 * Cross-Origin Resource Sharing. [http://www.w3.org/TR/cors/]()
-* "Lightweight Server Support for Browser-Based CSRF Protection". [http://research.microsoft.com/en-us/um/people/helenw/papers/racl.pdf]()
+* "Lightweight Server Support for Browser-Based CSRF Protection". [https://research.microsoft.com/en-us/um/people/helenw/papers/racl.pdf]()
 * "Robust Defenses for Cross-Site Request Forgery". [http://www.adambarth.com/papers/2008/barth-jackson-mitchell-b.pdf]()
 * SameDomain cookies. [https://github.com/mozmark/SameDomain-cookies]()
 
