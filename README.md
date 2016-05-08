@@ -3,9 +3,9 @@ Towards Defeating Cross-Site Request Forgery
 
 Mike Shema <mike@deadliestwebattacks.com> [@CodexWebSecurum](https://twitter.com/CodexWebSecurum)
 
-Adapted from the original post at [https://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/](). 
+Adapted from the original post at [...And They Have a Plan](https://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/). 
 
-Some background on Cross-Site Request Forgery is at [https://deadliestwebattacks.com/2013/01/21/user-agent-secret-agent-double-agent/]().
+Some background on Cross-Site Request Forgery is at [User Agent. Secret Agent. Double Agent.](https://deadliestwebattacks.com/2013/01/21/user-agent-secret-agent-double-agent/).
 
 Thanks to Vaagn Toukharian <[@tukharian](https://twitter.com/tukharian)> for input, feedback, and design help.
 
@@ -212,11 +212,11 @@ Demonstrate how this could be implemented by Web App Firewall rules.
 
 [Additional Resources & References](id:references)
 ===
-* Content Security Policy. [http://www.w3.org/TR/CSP/]()
-* Cross-Origin Resource Sharing. [http://www.w3.org/TR/cors/]()
-* "Lightweight Server Support for Browser-Based CSRF Protection". [https://research.microsoft.com/en-us/um/people/helenw/papers/racl.pdf]()
-* "Robust Defenses for Cross-Site Request Forgery". [http://www.adambarth.com/papers/2008/barth-jackson-mitchell-b.pdf]()
-* SameDomain cookies. [https://github.com/mozmark/SameDomain-cookies]()
+* Content Security Policy. http://www.w3.org/TR/CSP/
+* Cross-Origin Resource Sharing. http://www.w3.org/TR/cors/
+* ["Lightweight Server Support for Browser-Based CSRF Protection"](https://research.microsoft.com/en-us/um/people/helenw/papers/racl.pdf)
+* ["Robust Defenses for Cross-Site Request Forgery"](http://www.adambarth.com/papers/2008/barth-jackson-mitchell-b.pdf)
+* [SameDomain cookies](https://github.com/mozmark/SameDomain-cookies)
 
 Later work
 ----
