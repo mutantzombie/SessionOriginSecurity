@@ -1,7 +1,7 @@
 Towards Defeating Cross-Site Request Forgery
 =====================
 
-Mike Shema <mike@deadliestwebattacks.com> [@CodexWebSecurum](https://twitter.com/CodexWebSecurum)
+Mike Shema [@Codexatron](https://twitter.com/Codexatron)
 
 Adapted from the original post at [...And They Have a Plan](https://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/). 
 
