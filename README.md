@@ -3,9 +3,9 @@ Towards Defeating Cross-Site Request Forgery
 
 Mike Shema [@Codexatron](https://twitter.com/Codexatron)
 
-Adapted from the original post at [...And They Have a Plan](https://deadliestwebattacks.com/2013/08/08/and-they-have-a-plan/). 
+Adapted from the original post at [...And They Have a Plan](https://deadliestwebattacks.com/archive/2013-08-08-and-they-have-a-plan). 
 
-Some background on Cross-Site Request Forgery is at [User Agent. Secret Agent. Double Agent.](https://deadliestwebattacks.com/2013/01/21/user-agent-secret-agent-double-agent/).
+Some background on Cross-Site Request Forgery is at [User Agent. Secret Agent. Double Agent.](https://deadliestwebattacks.com/archive/2013-01-21-user-agent-secret-agent-double-agent).
 
 Thanks to Vaagn Toukharian <[@tukharian](https://twitter.com/tukharian)> for input, feedback, and design help.
 
