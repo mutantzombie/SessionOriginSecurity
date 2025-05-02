@@ -1,13 +1,13 @@
 Towards Defeating Cross-Site Request Forgery
 =====================
 
-Mike Shema [@Codexatron](https://twitter.com/Codexatron)
+Mike Shema [@mutantzombie.bsky.social](https://bsky.app/profile/mutantzombie.bsky.social)
 
-Adapted from the original post at [...And They Have a Plan](https://deadliestwebattacks.com/archive/2013-08-08-and-they-have-a-plan). 
+Adapted from the original post at [...And They Have a Plan](https://dangerouserrors.com/archive/2013-08-08-and-they-have-a-plan).
 
-Some background on Cross-Site Request Forgery is at [User Agent. Secret Agent. Double Agent.](https://deadliestwebattacks.com/archive/2013-01-21-user-agent-secret-agent-double-agent).
+Some background on Cross-Site Request Forgery is at [User Agent. Secret Agent. Double Agent.](https://dangerouserrors.com/csrf/2013/01/21/user-agent-secret-agent-double-agent).
 
-Thanks to Vaagn Toukharian <[@tukharian](https://twitter.com/tukharian)> for input, feedback, and design help.
+Thanks to [Vaagn Toukharian](https://www.linkedin.com/in/tukhar) for input, feedback, and design help.
 
 Contents
 ---
@@ -212,15 +212,14 @@ Demonstrate how this could be implemented by Web App Firewall rules.
 
 [Additional Resources & References](id:references)
 ===
-* Content Security Policy. http://www.w3.org/TR/CSP/
-* Cross-Origin Resource Sharing. http://www.w3.org/TR/cors/
+* Content Security Policy. https://www.w3.org/TR/CSP/
+* Cross-Origin Resource Sharing. https://www.w3.org/TR/cors/
 * ["Lightweight Server Support for Browser-Based CSRF Protection"](https://research.microsoft.com/en-us/um/people/helenw/papers/racl.pdf)
-* ["Robust Defenses for Cross-Site Request Forgery"](http://www.adambarth.com/papers/2008/barth-jackson-mitchell-b.pdf)
+* ["Robust Defenses for Cross-Site Request Forgery"](https://www.adambarth.com/papers/2008/barth-jackson-mitchell-b.pdf)
 * [SameDomain cookies](https://github.com/mozmark/SameDomain-cookies)
 
 Later work
 ----
 - First-Party Cookies ([draft RFC](https://tools.ietf.org/html/draft-west-first-party-cookies-07)).
    - This is notable for being implemented and slated for release in version 51 of the Google Chrome Browser. Check out the [commit](https://codereview.chromium.org/1783813002).
-   - It was referenced in the BlackHat Asia 2016 [briefing](https://www.blackhat.com/docs/asia-16/materials/asia-16-Karakostas-Practical-New-Developments-In-The-BREACH-Attack.pdf) (slide 35) by Dimitris Karakostas and Dionysis Zindros that called out the benefits of anti-CSRF measures vs. TLS [BREACH-style](http://breachattack.com) vulnerabilities.
-
+   - It was referenced in the BlackHat Asia 2016 [briefing](https://www.blackhat.com/docs/asia-16/materials/asia-16-Karakostas-Practical-New-Developments-In-The-BREACH-Attack.pdf) (slide 35) by Dimitris Karakostas and Dionysis Zindros that called out the benefits of anti-CSRF measures vs. TLS [BREACH-style](https://breachattack.com) vulnerabilities.
